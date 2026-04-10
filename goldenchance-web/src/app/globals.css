@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --gc-primary: #F5C518;
+  --gc-secondary: #121212;
+  --gc-accent: #FFD700;
+  --gc-success: #00E676;
+  --gc-danger: #FF5252;
+  --gc-background: #0A0A0A;
+  --gc-card: #1A1A1A;
+  --background: var(--gc-background);
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-weight-bold: 600;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, rgba(245,197,24,0.08), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(255,0,70,0.08), transparent 18%),
+    var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+}
+
+.iconify-icon,
+iconify-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mono-num {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.gc-nav-link:hover {
+  color: #ddd !important;
+}
+
+.gc-live-dot {
+  animation: gc-pulse 1.4s ease-in-out infinite;
+}
+
+.gc-qa-btn:hover {
+  background: #1e1e1e !important;
+}
+
+.gc-player-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.gc-leaderboard:hover {
+  color: #999 !important;
+}
+
+input.gc-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  margin: 0;
+}
+
+input.gc-range:focus {
+  outline: none;
+}
+
+input.gc-range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent;
+  border: none;
+}
+
+input.gc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f5c518;
+  border: 3px solid #111;
+  margin-top: -7px;
+  box-shadow: 0 0 0 6px rgba(245,197,24,0.16);
+  cursor: pointer;
+}
+
+input.gc-range::-moz-range-track {
+  height: 6px;
+  background: transparent;
+  border: none;
+}
+
+input.gc-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f5c518;
+  border: 3px solid #111;
+  cursor: pointer;
+}
+
+input.gc-range::-ms-track {
+  width: 100%;
+  height: 6px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input.gc-range::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f5c518;
+  border: 3px solid #111;
+  cursor: pointer;
+}
+
+/* Custom font weights */
+strong, b {
+  font-weight: 600 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500 !important;
+}
+
+small {
+  font-weight: 500 !important;
+}
+
+@keyframes gc-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
