@@ -8,16 +8,32 @@ on:
 
 jobs:
   deploy:
-    if: ${{ secrets.DEPLOY_HOST != '' && secrets.DEPLOY_USER != '' && secrets.DEPLOY_KEY != '' }}
+    if: ${{ secrets.DEPLOY_HOST != '' && secrets.DEPLOY_USER != '' && secrets.DEPLOY_KEY != '' && secrets.DEPLOY_DOMAIN != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: /root/deploy.sh main
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Sync project to server
+        run: |
+          rsync -az --delete --exclude='.git' --exclude='.github' --exclude='node_modules' --exclude='.next' . "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/www/golden-chance"
+
+      - name: Run remote deploy
+        env:
+          DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
+          DEPLOY_SSL_CERT_PATH: ${{ secrets.DEPLOY_SSL_CERT_PATH }}
+          DEPLOY_SSL_KEY_PATH: ${{ secrets.DEPLOY_SSL_KEY_PATH }}
+        run: |
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" bash -s <<EOF
+          set -euo pipefail
+          cd /var/www/golden-chance
+          chmod +x scripts/remote-deploy.sh
+          DEPLOY_DOMAIN="${DEPLOY_DOMAIN}" DEPLOY_SSL_CERT_PATH="${DEPLOY_SSL_CERT_PATH:-}" DEPLOY_SSL_KEY_PATH="${DEPLOY_SSL_KEY_PATH:-}" ./scripts/remote-deploy.sh
+          EOF
