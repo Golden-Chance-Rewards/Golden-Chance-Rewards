@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from 'react'
+import { type ElementType, useState } from 'react'
 import Script from 'next/script'
 
-const IconifyIcon = 'iconify-icon' as any;
+const IconifyIcon = 'iconify-icon' as ElementType;
 
 export default function Home() {
   const stakeMin = 10
@@ -37,7 +37,7 @@ export default function Home() {
         <div style={{ position: 'relative', zIndex: 10 }}>
  
           {/* ══════════════ HEADER ══════════════ */}
-          <header style={{
+          <header className="gc-header" style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '13px 28px',
             position: 'sticky', top: 0, zIndex: 50,
@@ -49,7 +49,7 @@ export default function Home() {
           }}>
  
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div className="gc-header-brand" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div
                 style={{
                   position: 'relative',
@@ -78,14 +78,14 @@ export default function Home() {
                 }} />
               </div>
 
-              <span style={{ fontStyle: 'italic', fontWeight: 800, fontSize: 16 }}>
+              <span className="gc-brand-text" style={{ fontStyle: 'italic', fontWeight: 800, fontSize: 16 }}>
                 <span style={{ color: '#f5c518' }}>GOLDEN </span>
                 <span style={{ color: '#fff' }}>CHANCE</span>
               </span>
             </div>
  
             {/* Nav */}
-            <nav style={{ display: 'flex', alignItems: 'center', gap: 38 }}>
+            <nav className="gc-header-nav" style={{ display: 'flex', alignItems: 'center', gap: 38 }}>
               {(['Home', 'Missions', 'Challenges', 'Rewards'] as const).map((item) => (
                 <a key={item} href="#" className="gc-nav-link" style={{
                   color: item === 'Home' ? '#fff' : '#666',
@@ -106,9 +106,9 @@ export default function Home() {
             </nav>
  
             {/* Right actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div className="gc-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               {/* Balance pill */}
-              <div style={{
+              <div className="gc-balance-pill" style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 background: 'var(--gc-card)', borderRadius: 999,
                 padding: '8px 6px 8px 14px',
@@ -153,14 +153,14 @@ export default function Home() {
           </header>
  
           {/* ══════════════ MAIN ══════════════ */}
-          <main style={{ padding: '24px 28px', maxWidth: 1600, margin: '0 auto' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, alignItems: 'start' }}>
+          <main className="gc-main" style={{ padding: '24px 28px', maxWidth: 1600, margin: '0 auto' }}>
+            <div className="gc-main-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, alignItems: 'start' }}>
  
               {/* ═══ LEFT COLUMN ═══ */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <div className="gc-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
  
                 {/* ── HERO ── */}
-                <section style={{
+                <section className="gc-hero" style={{
                   borderRadius: 24,
                   border: '1px solid rgba(255,255,255,0.06)',
                   overflow: 'hidden',
@@ -171,7 +171,7 @@ export default function Home() {
                   background: 'radial-gradient(ellipse at 60% 40%, #18203e 0%, #10121a 55%, #0d0e16 100%)',
                 }}>
                   {/* Purple glow */}
-                  <div style={{
+                  <div className="gc-hero-content" style={{
                     position: 'absolute', top: -30, right: 180, width: 260, height: 260,
                     borderRadius: '50%', background: 'radial-gradient(circle, rgba(65,45,210,0.24) 0%, transparent 70%)',
                     pointerEvents: 'none',
@@ -204,7 +204,7 @@ export default function Home() {
                     </div>
                     
                     {/* ── HERO HEADING ── */}
-                    <h1 style={{
+                    <h1 className="gc-hero-title" style={{
                       fontSize: '64px',
                       fontWeight: 600,
                       lineHeight: 1.05,
@@ -226,7 +226,7 @@ export default function Home() {
                       <span className="mono-num" style={{ color: 'var(--gc-primary)', fontWeight: 600 }}>100,000 GC</span> prize pool.
                     </p>
  
-                    <div style={{ display: 'flex', gap: 14 }}>
+                    <div className="gc-hero-cta" style={{ display: 'flex', gap: 14 }}>
                       <button style={{
                         display: 'flex', alignItems: 'center', gap: 8,
                         padding: '13px 28px', borderRadius: 999, fontSize: 15, fontWeight: 700,
@@ -251,7 +251,7 @@ export default function Home() {
 
                   {/* ── RIGHT: Hero character image ── */}
                   {/* ✅ FIX: width 62% → 50%, maxWidth 130% → 100%, removed negative offsets */}
-                  <div style={{
+                  <div className="gc-hero-media" style={{
                     position: 'absolute',
                     right: 0,
                     bottom: 0,
@@ -297,9 +297,9 @@ export default function Home() {
                     </button>
                   </div>
                           
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div className="gc-mission-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                     {/* Mission 1 */}
-                    <div style={{
+                    <div className="gc-challenge-row" style={{
                       background: 'var(--gc-card)', border: '1px solid rgba(255,255,255,0.07)',
                       borderRadius: 16, padding: 22,
                       display: 'flex', flexDirection: 'column',
@@ -417,7 +417,7 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexShrink: 0 }}>
+                      <div className="gc-challenge-row-right" style={{ display: 'flex', alignItems: 'center', gap: 18, flexShrink: 0 }}>
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontSize: 11, color: '#444', marginBottom: 3 }}>Entry</div>
                           <div style={{ fontSize: 14, fontWeight: 700 }} className="mono-num">100 GC</div>
@@ -430,7 +430,7 @@ export default function Home() {
                     </div>
  
                     {/* Challenge 2 */}
-                    <div style={{
+                    <div className="gc-challenge-row" style={{
                       background: 'var(--gc-card)', border: '1px solid rgba(255,255,255,0.07)',
                       borderRadius: 14, padding: '16px 20px',
                       display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
@@ -457,7 +457,7 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexShrink: 0 }}>
+                      <div className="gc-challenge-row-right" style={{ display: 'flex', alignItems: 'center', gap: 18, flexShrink: 0 }}>
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontSize: 11, color: '#444', marginBottom: 3 }}>Entry</div>
                           <div style={{ fontSize: 14, fontWeight: 700, color: '#00e676' }}>Free</div>
@@ -476,7 +476,7 @@ export default function Home() {
               {/* ═══ END LEFT ═══ */}
  
               {/* ═══ RIGHT COLUMN ═══ */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div className="gc-right-col" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
  
                 {/* ── LIVE MATCH ── */}
                 <div style={{
@@ -606,7 +606,7 @@ export default function Home() {
                 {/* ── QUICK ACTIONS ── */}
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>Quick Actions</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div className="gc-quick-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                     {[
                       { icon: 'solar:wallet-linear',  label: 'Deposit' },
                       { icon: 'solar:history-linear', label: 'History' },
