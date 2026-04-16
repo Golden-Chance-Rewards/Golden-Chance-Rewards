@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Header from '../../components/nav/Header'
 
 // ── Inline SVG Icons — no external dependency ─────────────────────────────────
 const Icons = {
@@ -195,7 +196,6 @@ export default function Dashboard() {
           background: rgba(255,82,82,0.06);
         }
 
-        .gc-nav-link:hover { color: #fff !important; }
         .gc-qa-btn:hover { background: rgba(255,255,255,0.04) !important; }
         .gc-player-row:hover { background: rgba(255,255,255,0.03); }
       `}</style>
@@ -218,110 +218,53 @@ export default function Dashboard() {
 
         <div style={{ position: 'relative', zIndex: 10 }}>
 
-          {/* ══════════════ HEADER ══════════════ */}
-          <header style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '13px 28px',
-            position: 'sticky', top: 0, zIndex: 50,
-            background: 'rgba(10, 10, 14, 0.55)',
-            backdropFilter: 'blur(18px)',
-            WebkitBackdropFilter: 'blur(18px)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 24px 80px rgba(0,0,0,0.18)',
-          }}>
-
-            {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{
-                position: 'relative', width: 42, height: 42, borderRadius: '50%',
-                background: 'linear-gradient(135deg,#1c1800,#2c2000)',
-                border: '2px solid #f5c518',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                overflow: 'hidden', flexShrink: 0,
-              }}>
-                <img src="goldenChanceLogo.png" alt="logo" style={{ width: 50, height: 50, objectFit: 'contain' }} />
-                <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(circle at center, transparent 58%, rgba(10,10,14,0.48) 100%)' }} />
-              </div>
-              <span style={{ fontStyle: 'italic', fontWeight: 800, fontSize: 16 }}>
-                <span style={{ color: '#f5c518' }}>GOLDEN </span>
-                <span style={{ color: '#fff' }}>CHANCE</span>
-              </span>
-            </div>
-
-            {/* Nav */}
-            <nav style={{ display: 'flex', alignItems: 'center', gap: 38 }}>
-              {(['Home', 'Missions', 'Challenges', 'Rewards'] as const).map((item) => (
-                <a key={item} href="#" className="gc-nav-link" style={{
-                  color: item === 'Home' ? '#fff' : '#666',
-                  fontWeight: item === 'Home' ? 600 : 400,
-                  fontSize: 15, textDecoration: 'none',
-                  position: 'relative', paddingBottom: 6,
-                  transition: 'color .15s',
-                }}>
-                  {item}
-                  {item === 'Home' && (
-                    <span style={{
-                      position: 'absolute', bottom: -7, left: 0, right: 0,
-                      height: 2, background: '#f5c518', borderRadius: '2px 2px 0 0',
-                    }} />
-                  )}
-                </a>
-              ))}
-            </nav>
-
-            {/* Right actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-
-              {/* Balance pill */}
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--gc-card)', borderRadius: 999,
-                padding: '8px 6px 8px 14px',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <Icons.wallet style={{ color: 'var(--gc-primary)', width: 16, height: 16 }} />
-                <span style={{ fontWeight: 600, fontSize: 14 }}>
-                  12,450 <span style={{ color: '#555', fontWeight: 400 }}>GC</span>
-                </span>
+          <Header
+            rightContent={
+              <>
                 <div style={{
-                  width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.05)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  background: 'var(--gc-card)', borderRadius: 999,
+                  padding: '8px 6px 8px 14px',
+                  border: '1px solid rgba(255,255,255,0.06)',
                 }}>
-                  <Icons.addCircle style={{ color: '#777', width: 15, height: 15 }} />
+                  <Icons.wallet style={{ color: 'var(--gc-primary)', width: 16, height: 16 }} />
+                  <span style={{ fontWeight: 600, fontSize: 14 }}>
+                    12,450 <span style={{ color: '#555', fontWeight: 400 }}>GC</span>
+                  </span>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.05)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                  }}>
+                    <Icons.addCircle style={{ color: '#777', width: 15, height: 15 }} />
+                  </div>
                 </div>
-              </div>
-
-              {/* Bell */}
-              <button style={{
-                width: 38, height: 38, borderRadius: '50%', background: 'var(--gc-card)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', position: 'relative',
-              }}>
-                <Icons.bell style={{ color: '#777', width: 18, height: 18 }} />
-                <span style={{
-                  position: 'absolute', top: 8, right: 8,
-                  width: 7, height: 7, background: 'var(--gc-danger)',
-                  borderRadius: '50%', border: '1.5px solid var(--gc-card)',
-                }} />
-              </button>
-
-              {/* ── LOGOUT BUTTON ── */}
-              <button className="gc-logout-btn" onClick={handleLogout}>
-                <Icons.logout style={{ width: 14, height: 14 }} />
-                Logout
-              </button>
-
-              {/* Avatar */}
-              <div style={{
-                width: 38, height: 38, borderRadius: '50%',
-                border: '2px solid rgba(245,197,24,0.35)', overflow: 'hidden', cursor: 'pointer',
-              }}>
-                <img src="https://i.pravatar.cc/150?img=33" alt="User"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            </div>
-          </header>
+                <button style={{
+                  width: 38, height: 38, borderRadius: '50%', background: 'var(--gc-card)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', position: 'relative',
+                }}>
+                  <Icons.bell style={{ color: '#777', width: 18, height: 18 }} />
+                  <span style={{
+                    position: 'absolute', top: 8, right: 8,
+                    width: 7, height: 7, background: 'var(--gc-danger)',
+                    borderRadius: '50%', border: '1.5px solid var(--gc-card)',
+                  }} />
+                </button>
+                <button className="gc-logout-btn" onClick={handleLogout}>
+                  <Icons.logout style={{ width: 14, height: 14 }} />
+                  Logout
+                </button>
+                <div style={{
+                  width: 38, height: 38, borderRadius: '50%',
+                  border: '2px solid rgba(245,197,24,0.35)', overflow: 'hidden', cursor: 'pointer',
+                }}>
+                  <img src="https://i.pravatar.cc/150?img=33" alt="User"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              </>
+            }
+          />
 
           {/* ══════════════ MAIN ══════════════ */}
           <main style={{ padding: '24px 28px', maxWidth: 1600, margin: '0 auto' }}>
@@ -362,12 +305,14 @@ export default function Dashboard() {
                     </p>
 
                     <div style={{ display: 'flex', gap: 14 }}>
-                      <button style={{
-                        display: 'flex', alignItems: 'center', gap: 8,
-                        padding: '13px 28px', borderRadius: 999, fontSize: 15, fontWeight: 700,
-                        background: 'var(--gc-primary)', color: '#111', border: 'none', cursor: 'pointer',
-                        boxShadow: '0 12px 40px rgba(245,197,24,0.22)',
-                      }}>
+                      <button
+                        onClick={() => router.push('/challenges')}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 8,
+                          padding: '13px 28px', borderRadius: 999, fontSize: 15, fontWeight: 700,
+                          background: 'var(--gc-primary)', color: '#111', border: 'none', cursor: 'pointer',
+                          boxShadow: '0 12px 40px rgba(245,197,24,0.22)',
+                        }}>
                         Play Now
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M6 3.33325L10 7.99992L6 12.6666" stroke="#121212" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -472,7 +417,11 @@ export default function Dashboard() {
                       <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 4 }}>Active Challenges</div>
                       <div style={{ fontSize: 13, color: '#555' }}>Skill-based games and predictions</div>
                     </div>
-                    <button style={{ background: 'none', border: 'none', color: '#555', fontSize: 13, cursor: 'pointer' }}>Browse all</button>
+                    <button
+                      onClick={() => router.push('/challenges')}
+                      style={{ background: 'none', border: 'none', color: '#f5c518', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }}>
+                      Browse all
+                    </button>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -503,7 +452,11 @@ export default function Dashboard() {
                           <div style={{ fontSize: 11, color: '#444', marginBottom: 3 }}>Entry</div>
                           <div style={{ fontSize: 14, fontWeight: 700 }}>100 GC</div>
                         </div>
-                        <button style={{ background: '#f5c518', color: '#111', fontWeight: 700, border: 'none', borderRadius: 8, padding: '9px 22px', fontSize: 14, cursor: 'pointer' }}>Join</button>
+                        <button
+                          onClick={() => router.push('/challenges')}
+                          style={{ background: '#f5c518', color: '#111', fontWeight: 700, border: 'none', borderRadius: 8, padding: '9px 22px', fontSize: 14, cursor: 'pointer' }}>
+                          Join
+                        </button>
                       </div>
                     </div>
 
@@ -511,7 +464,7 @@ export default function Dashboard() {
                     <div style={{ background: 'var(--gc-card)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                         <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--gc-card)', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <Icons.lightbulb style={{ color: '#666', width: 20, height: 20 }} />
+                          <Icons.lightbulb style={{ color: '#666', width: 20, height: 18 }} />
                         </div>
                         <div>
                           <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 7 }}>Weekly Crypto Trivia</div>
@@ -531,7 +484,11 @@ export default function Dashboard() {
                           <div style={{ fontSize: 11, color: '#444', marginBottom: 3 }}>Entry</div>
                           <div style={{ fontSize: 14, fontWeight: 700, color: '#00e676' }}>Free</div>
                         </div>
-                        <button style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', fontWeight: 500, border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8, padding: '9px 22px', fontSize: 14, cursor: 'pointer' }}>Join</button>
+                        <button
+                          onClick={() => router.push('/challenges')}
+                          style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', fontWeight: 500, border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8, padding: '9px 22px', fontSize: 14, cursor: 'pointer' }}>
+                          Join
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -592,12 +549,14 @@ export default function Dashboard() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#444', marginBottom: 20 }}>
                       <span>{stakeMin}</span><span>{stakeMax}</span>
                     </div>
-                    <button style={{
-                      width: '100%', padding: '14px 0', borderRadius: 12,
-                      background: 'linear-gradient(90deg,#f5c518,#ffd700)',
-                      color: '#111', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer',
-                      boxShadow: '0 0 28px rgba(245,197,24,0.2)',
-                    }}>
+                    <button
+                      onClick={() => router.push('/challenges')}
+                      style={{
+                        width: '100%', padding: '14px 0', borderRadius: 12,
+                        background: 'linear-gradient(90deg,#f5c518,#ffd700)',
+                        color: '#111', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer',
+                        boxShadow: '0 0 28px rgba(245,197,24,0.2)',
+                      }}>
                       Lock Prediction
                     </button>
                   </div>

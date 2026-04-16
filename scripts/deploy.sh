@@ -1,41 +1,63 @@
 #!/usr/bin/env bash
-# Usage: ./scripts/deploy.sh <server_ip> <ssh_user> [ssh_key_path]
-# Example: ./scripts/deploy.sh 104.248.207.103 root ~/.ssh/id_rsa
+# Usage: ./scripts/deploy.sh
 set -euo pipefail
 
-SERVER_IP="${1:-104.248.207.103}"
-SSH_USER="${2:-root}"
-SSH_KEY="${3:-$HOME/.ssh/id_rsa}"
+SERVER_IP="104.248.207.103"
+SSH_USER="root"
+SSH_PASS="Goldenchance2026KW"
 REMOTE_DIR="/var/www/golden-chance"
 
-echo "==> Deploying to $SSH_USER@$SERVER_IP"
-echo "==> Remote directory: $REMOTE_DIR"
+echo "==> Starting Local Build to save server RAM..."
+npm run build
 
-SSH_OPTS="-o StrictHostKeyChecking=no -i $SSH_KEY"
-
-# Create remote directory if it doesn't exist
-ssh $SSH_OPTS "$SSH_USER@$SERVER_IP" "mkdir -p $REMOTE_DIR"
-
-# Sync files to server (exclude unnecessary files)
-echo "==> Syncing files..."
-rsync -az --delete \
+echo "==> Syncing files to server..."
+# We use sshpass for password authentication
+# Syncing everything including .next build folder
+sshpass -p "$SSH_PASS" rsync -az --delete \
   --exclude='.git' \
   --exclude='.github' \
-  --exclude='node_modules' \
-  --exclude='.next' \
   --exclude='.env.local' \
-  -e "ssh $SSH_OPTS" \
-  . "$SSH_USER@$SERVER_IP:$REMOTE_DIR/"
+  -e "ssh -o StrictHostKeyChecking=no" \
+  ./ "$SSH_USER@$SERVER_IP:$REMOTE_DIR/"
 
-# Run remote deploy
-echo "==> Running remote deploy script..."
-ssh $SSH_OPTS "$SSH_USER@$SERVER_IP" bash -s << 'EOF'
-set -euo pipefail
+echo "==> Restarting application on server..."
+sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SERVER_IP" bash -s << 'ENDSSH'
+set -e
 cd /var/www/golden-chance
-chmod +x scripts/remote-deploy.sh
-./scripts/remote-deploy.sh
-EOF
 
-echo ""
-echo "==> Deployment complete!"
+# Start/Restart with PM2
+if command -v pm2 > /dev/null 2>&1; then
+  pm2 delete golden-chance || true
+  pm2 start npm --name "golden-chance" -- start
+  pm2 save
+else
+  pkill -f "npm start" || true
+  nohup npm start > "/var/log/golden-chance.log" 2>&1 &
+fi
+
+# Ensure Nginx is pointing to port 3000
+if [ ! -f /etc/nginx/sites-available/golden-chance.conf ]; then
+    cat > /etc/nginx/sites-available/golden-chance.conf <<NGINXEOF
+server {
+    listen 80;
+    server_name _;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+NGINXEOF
+    ln -sf /etc/nginx/sites-available/golden-chance.conf /etc/nginx/sites-enabled/golden-chance.conf
+    rm -f /etc/nginx/sites-enabled/default
+    nginx -t && systemctl restart nginx
+fi
+ENDSSH
+
+echo "==> Deployment Complete!"
 echo "==> Live at: http://$SERVER_IP"

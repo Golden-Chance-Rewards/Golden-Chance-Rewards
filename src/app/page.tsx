@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Header from '../components/nav/Header'
 
 const USERS = [
   { email: 'player@gc.com', password: 'player123', role: 'player', name: 'Alex Crypto' },
@@ -20,13 +21,6 @@ export default function LandingPage() {
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
   const [showPass, setShowPass] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   const openModal = (mode: ModalMode) => {
     setModal(mode); setError(''); setEmail(''); setPassword(''); setName(''); setConfirm('')
@@ -148,45 +142,6 @@ export default function LandingPage() {
           box-shadow: 0 0 0 3px rgba(245,197,24,0.08);
         }
         .inp::placeholder { color: #333; }
-
-        /* ── NAV ── */
-        .nav {
-          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 0 56px; height: 66px;
-          transition: all 0.3s ease;
-        }
-        .nav.scrolled {
-          background: rgba(10,10,10,0.9);
-          border-bottom: 1px solid rgba(255,255,255,0.06);
-          backdrop-filter: blur(20px) saturate(1.5);
-        }
-        .nav-logo {
-          display: flex; align-items: center; gap: 10px;
-          text-decoration: none;
-        }
-        .nav-logo-icon {
-          width: 38px; height: 38px; border-radius: 10px;
-          background: linear-gradient(135deg, #1a1500, #2a2000);
-          border: 1.5px solid rgba(245,197,24,0.5);
-          display: flex; align-items: center; justify-content: center;
-          overflow: hidden;
-          box-shadow: 0 2px 12px rgba(245,197,24,0.15);
-        }
-        .nav-logo-text {
-          font-family: 'Inter', sans-serif;
-          font-weight: 800;
-          font-style: italic;
-          font-size: 15px;
-          letter-spacing: -0.03em;
-        }
-        .nav-links { display: flex; align-items: center; gap: 36px; }
-        .nav-link {
-          color: #555; font-size: 13.5px; font-weight: 500; text-decoration: none; cursor: pointer;
-          transition: color 0.2s; letter-spacing: -0.01em;
-        }
-        .nav-link:hover { color: rgba(255,255,255,0.85); }
-        .nav-actions { display: flex; align-items: center; gap: 8px; }
 
         /* ── HERO ── */
         .hero {
@@ -457,8 +412,6 @@ export default function LandingPage() {
         }
 
         @media (max-width: 960px) {
-          .nav { padding: 0 24px; }
-          .nav-links { display: none; }
           .hero { padding: 120px 24px 80px; flex-direction: column; gap: 56px; }
           .hero-right { padding-left: 0; justify-content: flex-start; }
           .hero-headline { font-size: 48px; }
@@ -468,35 +421,18 @@ export default function LandingPage() {
         }
       `}</style>
 
-      {/* ════ NAV ════ */}
-      <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
-        <div className="nav-logo">
-          <div className="nav-logo-icon">
-            <img src="goldenChanceLogo.png" alt="GC" style={{ width: 44, objectFit: 'contain' }}
-              onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-            />
-          </div>
-          <span className="nav-logo-text">
-            <span style={{ color: '#F5C518' }}>GOLDEN</span>
-            <span style={{ color: 'rgba(255,255,255,0.9)' }}> CHANCE</span>
-          </span>
-        </div>
-
-        <div className="nav-links">
-          {['Missions', 'Challenges', 'Leaderboard', 'Rewards'].map(l => (
-            <span key={l} className="nav-link">{l}</span>
-          ))}
-        </div>
-
-        <div className="nav-actions">
-          <button className="btn-ghost" style={{ padding: '9px 20px', fontSize: 13 }} onClick={() => openModal('login')}>
-            Login
-          </button>
-          <button className="btn-gold" style={{ padding: '10px 20px', fontSize: 13 }} onClick={() => openModal('signup')}>
-            Get Started ↗
-          </button>
-        </div>
-      </nav>
+      <Header
+        rightContent={
+          <>
+            <button className="btn-ghost" style={{ padding: '9px 20px', fontSize: 13 }} onClick={() => openModal('login')}>
+              Login
+            </button>
+            <button className="btn-gold" style={{ padding: '10px 20px', fontSize: 13 }} onClick={() => openModal('signup')}>
+              Get Started ↗
+            </button>
+          </>
+        }
+      />
 
       {/* ════ HERO ════ */}
       <section style={{ position: 'relative', overflow: 'hidden' }}>
@@ -583,7 +519,7 @@ export default function LandingPage() {
                   <span style={{ flex: 1, height: 1, background: 'rgba(245,197,24,0.15)' }} />
                   <span className="hot-badge">HOT</span>
                 </div>
-                <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, letterSpacing: '-0.02em' }}>IPL Winner Prediction</div>
+                <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, letterSpacing: '-0.02em' }}>Live Match Prediction</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
                   <div>
                     <div style={{ fontSize: 10, color: '#444', marginBottom: 3 }}>ENTRY</div>
@@ -698,7 +634,7 @@ export default function LandingPage() {
           <p className="section-sub">Compete now. Prizes are waiting.</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
             {[
-              { name: 'IPL 2025 Winner Prediction', entry: '₹49', pool: '₹25,000', timer: '03:42:18', tag: 'CRICKET', hot: true },
+              { name: 'Live Match Prediction', entry: '₹49', pool: '₹25,000', timer: '03:42:18', tag: 'PREDICTION', hot: true },
               { name: 'Stock Market Daily Quiz', entry: '₹29', pool: '₹10,000', timer: '05:11:44', tag: 'FINANCE', hot: false },
             ].map(c => (
               <div className="card" key={c.name} style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>

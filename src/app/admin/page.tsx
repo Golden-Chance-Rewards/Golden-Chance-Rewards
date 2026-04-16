@@ -238,7 +238,7 @@ export default function AdminDashboard() {
                   {[
                     { name: 'CS:GO Major Final Predictor', players: 1284, pool: '₹50,000',   ends: '2h 15m', status: 'Live'     },
                     { name: 'Weekly Crypto Trivia',        players: 856,  pool: '₹15,000',   ends: '1d 4h',  status: 'Live'     },
-                    { name: 'IPL Prediction Special',      players: 0,    pool: '₹1,00,000', ends: '3d',     status: 'Upcoming' },
+                    { name: 'Live Prediction Special',     players: 0,    pool: '₹1,00,000', ends: '3d',     status: 'Upcoming' },
                   ].map((ch, i) => (
                     <div key={i} className="admin-row-hover" style={{
                       display: 'grid', gridTemplateColumns: '2.5fr 1fr 1fr 1fr 80px',
