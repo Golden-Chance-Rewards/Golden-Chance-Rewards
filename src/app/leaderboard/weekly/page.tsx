@@ -1,11 +1,9 @@
-import Header from '../../../components/nav/Header'
 import Link from 'next/link'
 
 export default function WeeklyLeaderboardPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#070709', color: '#F0F0F0', fontFamily: "'Syne',system-ui,sans-serif", padding: '28px 24px' }}>
-      <Header />
-      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <div>
             <div style={{ fontSize: 34, fontWeight: 800, marginBottom: 6 }}>Weekly Leaderboard</div>

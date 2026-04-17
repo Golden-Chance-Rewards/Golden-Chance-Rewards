@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Header from '../../components/nav/Header'
 
 // ── Inline SVG Icons — no external dependency ─────────────────────────────────
 const Icons = {
@@ -218,53 +217,6 @@ export default function Dashboard() {
 
         <div style={{ position: 'relative', zIndex: 10 }}>
 
-          <Header
-            rightContent={
-              <>
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  background: 'var(--gc-card)', borderRadius: 999,
-                  padding: '8px 6px 8px 14px',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}>
-                  <Icons.wallet style={{ color: 'var(--gc-primary)', width: 16, height: 16 }} />
-                  <span style={{ fontWeight: 600, fontSize: 14 }}>
-                    12,450 <span style={{ color: '#555', fontWeight: 400 }}>GC</span>
-                  </span>
-                  <div style={{
-                    width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.05)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                  }}>
-                    <Icons.addCircle style={{ color: '#777', width: 15, height: 15 }} />
-                  </div>
-                </div>
-                <button style={{
-                  width: 38, height: 38, borderRadius: '50%', background: 'var(--gc-card)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer', position: 'relative',
-                }}>
-                  <Icons.bell style={{ color: '#777', width: 18, height: 18 }} />
-                  <span style={{
-                    position: 'absolute', top: 8, right: 8,
-                    width: 7, height: 7, background: 'var(--gc-danger)',
-                    borderRadius: '50%', border: '1.5px solid var(--gc-card)',
-                  }} />
-                </button>
-                <button className="gc-logout-btn" onClick={handleLogout}>
-                  <Icons.logout style={{ width: 14, height: 14 }} />
-                  Logout
-                </button>
-                <div style={{
-                  width: 38, height: 38, borderRadius: '50%',
-                  border: '2px solid rgba(245,197,24,0.35)', overflow: 'hidden', cursor: 'pointer',
-                }}>
-                  <img src="https://i.pravatar.cc/150?img=33" alt="User"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              </>
-            }
-          />
 
           {/* ══════════════ MAIN ══════════════ */}
           <main style={{ padding: '24px 28px', maxWidth: 1600, margin: '0 auto' }}>

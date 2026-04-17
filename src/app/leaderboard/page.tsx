@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import Header from '../../components/nav/Header'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 type TabId = 'daily' | 'weekly' | 'global'
@@ -265,9 +264,9 @@ export default function LeaderboardPage() {
         .lb-tab-btn.inactive {
           background: transparent; color: #444;
           border: 1px solid transparent;
-        }
+        } 
         .lb-tab-btn.inactive:hover { color: #888; }
-
+        
         /* ── TABLE ROWS ── */
         .lb-row {
           display: grid;
@@ -351,8 +350,7 @@ export default function LeaderboardPage() {
       `}</style>
 
       <div style={{ background: 'var(--bg)', minHeight: '100vh', color: 'var(--fg)', fontFamily: "'Inter', sans-serif" }}>
-          <Header />
-        {/* ══ PAGE BODY ══ */}
+                  {/* ══ PAGE BODY ══ */}
         <main style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px 80px' }}>
 
           {/* ── PAGE TITLE ── */}

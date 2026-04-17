@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: ./scripts/deploy.sh
 set -euo pipefail
-
+``
 SERVER_IP="104.248.207.103"
 SSH_USER="root"
 SSH_PASS="Goldenchance2026KW"
@@ -60,4 +60,4 @@ fi
 ENDSSH
 
 echo "==> Deployment Complete!"
-echo "==> Live at: http://$SERVER_IP"
+echo "==> Live at: https://goldenchance.win"

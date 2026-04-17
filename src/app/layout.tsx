@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import HeaderClient from '../components/nav/HeaderClient'
 
 export const metadata: Metadata = {
   title: 'GoldenChance',
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <HeaderClient />
+        {children}
+      </body>
     </html>
   )
 }

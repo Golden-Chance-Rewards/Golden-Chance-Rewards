@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Header from '../../components/nav/Header'
 
 // ============================================================
 // DATA TYPES
@@ -108,8 +107,7 @@ export default function ChallengesPage() {
     const c = currentCh
     return (
       <div style={pageStyle}>
-        <Header active="Challenges" />
-        <style>{`
+                <style>{`
           @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.8)}}
         `}</style>
 
@@ -390,8 +388,7 @@ export default function ChallengesPage() {
   // ---- LIST VIEW ----
   return (
     <div style={pageStyle}>
-      <Header active="Challenges" />
-      <style>{`
+            <style>{`
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.8)}}
         @keyframes flash{0%,100%{opacity:1}50%{opacity:.4}}

@@ -1,8 +1,8 @@
 "use client"
 
 import Link from 'next/link'
-import { ReactNode } from 'react'
-import { usePathname } from 'next/navigation'
+import { ReactNode, useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
 const HEADER_NAV = [
   { label: 'Dashboard', href: '/dashboard' },
@@ -33,23 +33,49 @@ function getActiveLabel(pathname: string | null): HeaderNavLabel | undefined {
 
 export default function Header({ active, rightContent }: HeaderProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const current = active ?? getActiveLabel(pathname)
+  const [balance, setBalance] = useState('12,450')
+  const [userName, setUserName] = useState('Player')
+
+  useEffect(() => {
+    const rawAuth = localStorage.getItem('gc_auth')
+    if (!rawAuth) return
+    try {
+      const auth = JSON.parse(rawAuth)
+      if (auth.balance) {
+        setBalance(String(auth.balance).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+      }
+      if (auth.name) {
+        setUserName(auth.name)
+      }
+    } catch {
+      // ignore invalid auth data
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('gc_auth')
+    router.push('/')
+  }
+
   return (
     <header style={{
       position: 'sticky', top: 0, zIndex: 100,
-      background: 'rgba(10,10,14,0.92)',
-      backdropFilter: 'blur(18px)',
+      background: 'rgba(10,10,14,0.96)',
+      backdropFilter: 'blur(22px)',
       borderBottom: '1px solid rgba(255,255,255,0.08)',
     }}>
       <div style={{
         maxWidth: 1600,
         margin: '0 auto',
-        padding: '13px 28px',
+        padding: '14px 28px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 24,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>         
           <div style={{
             width: 42,
             height: 42,
@@ -62,7 +88,7 @@ export default function Header({ active, rightContent }: HeaderProps) {
             overflow: 'hidden',
             flexShrink: 0,
           }}>
-            <img src="goldenChanceLogo.png" alt="logo" style={{ width: 44, height: 44, objectFit: 'contain' }} />
+            <img src="/goldenChanceLogo.png" alt="logo" style={{ width: 44, height: 44, objectFit: 'contain' }} />
           </div>
           <span style={{ fontStyle: 'italic', fontWeight: 800, fontSize: 16 }}>
             <span style={{ color: '#F5C518' }}>GOLDEN </span>
@@ -70,7 +96,7 @@ export default function Header({ active, rightContent }: HeaderProps) {
           </span>
         </div>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 38 }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 36, flexGrow: 1, justifyContent: 'center' }}>
           {HEADER_NAV.map(item => {
             const isActive = item.label === current
             return (
@@ -104,7 +130,75 @@ export default function Header({ active, rightContent }: HeaderProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             {rightContent}
           </div>
-        ) : null}
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '10px 16px',
+              borderRadius: 999,
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(245,197,24,0.18)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: 14,
+              whiteSpace: 'nowrap',
+            }}>
+              <span style={{ display: 'inline-flex', width: 28, height: 28, borderRadius: '50%', alignItems: 'center', justifyContent: 'center', background: 'rgba(245,197,24,0.12)', color: '#F5C518', fontSize: 12 }}>
+                GC
+              </span>
+              <span>{balance} GC</span>
+            </div>
+
+            <button type="button" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              color: '#fff',
+              cursor: 'pointer',
+            }} aria-label="Notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+            </button>
+
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: 14,
+            }} aria-label="Profile">
+              {userName.split(' ').map(word => word[0]).slice(0, 2).join('').toUpperCase()}
+            </div>
+
+            <button type="button" onClick={handleLogout} style={{
+              padding: '10px 18px',
+              borderRadius: 999,
+              border: '1px solid rgba(245,197,24,0.25)',
+              background: 'rgba(245,197,24,0.12)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: 14,
+              cursor: 'pointer',
+            }}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </header>
   )
